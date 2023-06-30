@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class LineMaker : MonoBehaviour
 {
-    public int launcherCountMax;
-    [SerializeField] GameObject Launcher;
+    [SerializeField] int launcherCountMax;
+    [SerializeField] float launcherPreviewWidthProportion;
+    [SerializeField] GameObject launcherPrefab;
 
     int launcherCount;
     bool isMousePressed;
     LineRenderer previewLine;
+    List<GameObject> launchers;
     Vector2 mousePosition;
 
     private void Start()
@@ -17,38 +19,41 @@ public class LineMaker : MonoBehaviour
         launcherCount = 0;
         isMousePressed = false;
         previewLine = GetComponent<LineRenderer>();
+        launchers = new List<GameObject>();
+        previewLine.startWidth = launcherPrefab.transform.localScale.y * launcherPreviewWidthProportion;
+        previewLine.endWidth = launcherPrefab.transform.localScale.y * launcherPreviewWidthProportion;
         ResetLine();
     }
 
     private void Update()
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (launcherCount < launcherCountMax)
+        
+        // Set first point of line to where mouse was pressed down
+        if (Input.GetMouseButtonDown(0) && !isMousePressed)
         {
-            // Set first point of line to where mouse was pressed down
-            if (Input.GetMouseButtonDown(0) && !isMousePressed)
+            isMousePressed = true;
+            previewLine.startColor = Color.green;
+            previewLine.endColor = Color.green;
+
+            previewLine.SetPosition(0, new Vector3(mousePosition.x, mousePosition.y, 0));
+        }
+
+        // Set second point where mouse is still being pressed
+        if (Input.GetMouseButton(0))
+        {
+            previewLine.SetPosition(1, new Vector3(mousePosition.x, mousePosition.y, 0));
+        }
+
+        // Create launcher and reset line when mouse would be released and if line distance is more than 0
+        if (Input.GetMouseButtonUp(0) && isMousePressed)
+        {
+            isMousePressed = false;
+            if (Vector3Math.GetDistance(previewLine.GetPosition(0), previewLine.GetPosition(1)) > 0)
             {
-                isMousePressed = true;
-                previewLine.startColor = Color.green;
-                previewLine.endColor = Color.green;
-
-                previewLine.SetPosition(0, new Vector3(mousePosition.x, mousePosition.y, 0));
+                SpawnLauncher();
             }
-
-            // Set second point where mouse is still being pressed
-            if (Input.GetMouseButton(0))
-            {
-                previewLine.SetPosition(1, new Vector3(mousePosition.x, mousePosition.y, 0));
-            }
-
-            // Create launcher and reset line when mouse would be released
-            if (Input.GetMouseButtonUp(0) && isMousePressed)
-            {
-                isMousePressed = false;
-                Vector3 spawnOrigin = GetVector3Midpoint(previewLine.GetPosition(0), previewLine.GetPosition(1));
-
-            }
+            ResetLine();
         }
     }
 
@@ -62,33 +67,25 @@ public class LineMaker : MonoBehaviour
         previewLine.SetPosition(1, new Vector3(0, 0, 0));
     }
 
-    // Gets two Vector 3 points and returns the midpoint of the two
-    Vector3 GetVector3Midpoint(Vector3 point1, Vector3 point2)
+    // Spawn launcher and match with line
+    void SpawnLauncher()
     {
-        Vector3 pointOutput;
+        Vector3 spawnOrigin = Vector3Math.GetMidpoint(previewLine.GetPosition(0), previewLine.GetPosition(1));
+        float spawnRot = Mathf.Rad2Deg * Mathf.Atan(Vector3Math.GetTangentYX(previewLine.GetPosition(0), previewLine.GetPosition(1)));
+        float spawnScale = Vector3Math.GetDistance(previewLine.GetPosition(0), previewLine.GetPosition(1));
 
-        pointOutput = new Vector3((point1.x + point2.x) / 2, (point1.y + point2.y) / 2, (point1.z + point2.z) / 2);
+        GameObject newLauncher = Instantiate(launcherPrefab, spawnOrigin, Quaternion.Euler(0, 0, spawnRot)) as GameObject;
+        newLauncher.transform.localScale = new Vector3(spawnScale, newLauncher.transform.localScale.y, 1);
+        launcherCount++;
+        launchers.Add(newLauncher);
 
-        return pointOutput;
+        // Destroy oldest launcher if above launcher count
+        if (launchers.Count > launcherCountMax)
+        {
+            // Replace destroy procedure with activating coroutine for animation
+            Destroy(launchers[0]);
+            launchers.RemoveAt(0);
+            launcherCount--;
+        }
     }
 }
-
-/*
- Create int launcherCountMaxand set it to 3
-Create LineRenderer line with 2 points and make it invisible
-Create int launcherCount and set it to 0
-
-Update:
-wait until launcherCount is below launcherCountMax
-find mouse cursor position and set it to mousePosition
-when pressing down mouse:
-    make line visible
-    set point 1 of line to mousePosition
-while mouse is pressed down:
-    set point 2 to mousePosition
-when mouse is released:
-    instantiate Launcher exactly inbetween points 1 and 2
-    rotate and scale Launcher to reach both points of line
-    launcherCount += 1
-    make line invisible again
- */
