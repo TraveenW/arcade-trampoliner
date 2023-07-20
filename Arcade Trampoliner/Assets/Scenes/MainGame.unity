@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7b3f982e6d6fe4cb1c50c7d2ba97a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launcherCountMax: 5
+  launcherCountMax: 4
   launcherPreviewWidthProportion: 0.7
   launcherPrefab: {fileID: 7020897256082559029, guid: 82b0c2c1f61c74b4c8a195b65c527b78, type: 3}
 --- !u!120 &1646098889
@@ -498,4 +498,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1970835219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1970835221}
+  - component: {fileID: 1970835220}
+  m_Layer: 0
+  m_Name: Ball Spawn Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1970835220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970835219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e295d2db4d1aae84e92c78c33904226f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnRate: 0.3
+  spawnRateRamp: 0.05
+  ballPrefab: {fileID: 3549336022850828210, guid: dd50823f2262fae42bbf692243451932, type: 3}
+  spawnX: -6.2
+  randomSpawnYMin: -8
+  randomSpawnYMax: 4
+  screenTopY: 9
+  horizontalPeakMin: -5
+  horizontalPeakMax: 0
+  timeToPeak: 1.7
+--- !u!4 &1970835221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970835219}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

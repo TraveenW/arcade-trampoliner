@@ -83,7 +83,7 @@ public class LineMaker : MonoBehaviour
         if (launchers.Count > launcherCountMax)
         {
             // Replace destroy procedure with activating coroutine for animation
-            Destroy(launchers[0]);
+            launchers[0].GetComponent<Rebound>().DespawnRebound();
             launchers.RemoveAt(0);
             launcherCount--;
         }
