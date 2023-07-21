@@ -23,7 +23,7 @@ public class Vector3Math : MonoBehaviour
     }
 
     // Get two Vector 3 points and returns a float distance between the two
-    public static float GetDistance(Vector3 point1, Vector3 point2)
+    public static float GetDistanceYX(Vector3 point1, Vector3 point2)
     {
         float distance;
 

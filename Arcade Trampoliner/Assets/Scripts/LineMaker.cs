@@ -49,7 +49,7 @@ public class LineMaker : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && isMousePressed)
         {
             isMousePressed = false;
-            if (Vector3Math.GetDistance(previewLine.GetPosition(0), previewLine.GetPosition(1)) > 0)
+            if (Vector3Math.GetDistanceYX(previewLine.GetPosition(0), previewLine.GetPosition(1)) > 0)
             {
                 SpawnLauncher();
             }
@@ -72,7 +72,7 @@ public class LineMaker : MonoBehaviour
     {
         Vector3 spawnOrigin = Vector3Math.GetMidpoint(previewLine.GetPosition(0), previewLine.GetPosition(1));
         float spawnRot = Mathf.Rad2Deg * Mathf.Atan(Vector3Math.GetTangentYX(previewLine.GetPosition(0), previewLine.GetPosition(1)));
-        float spawnScale = Vector3Math.GetDistance(previewLine.GetPosition(0), previewLine.GetPosition(1));
+        float spawnScale = Vector3Math.GetDistanceYX(previewLine.GetPosition(0), previewLine.GetPosition(1));
 
         GameObject newLauncher = Instantiate(launcherPrefab, spawnOrigin, Quaternion.Euler(0, 0, spawnRot)) as GameObject;
         newLauncher.transform.localScale = new Vector3(spawnScale, newLauncher.transform.localScale.y, 1);
@@ -82,7 +82,6 @@ public class LineMaker : MonoBehaviour
         // Destroy oldest launcher if above launcher count
         if (launchers.Count > launcherCountMax)
         {
-            // Replace destroy procedure with activating coroutine for animation
             launchers[0].GetComponent<Rebound>().DespawnRebound();
             launchers.RemoveAt(0);
             launcherCount--;
