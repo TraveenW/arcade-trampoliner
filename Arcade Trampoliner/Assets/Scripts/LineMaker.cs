@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class LineMaker : MonoBehaviour
 {
+    [Header("Draw Settings")]
+    [SerializeField] float minXRange = -5.5f;
+    [SerializeField] float maxXRange = 5.5f;
+    [SerializeField] float minYRange = -10;
+    [SerializeField] float maxYRange = 10;
+
+    [Header("Line Settings")]
     [SerializeField] int launcherCountMax;
     [SerializeField] float launcherPreviewWidthProportion;
     [SerializeField] GameObject launcherPrefab;
 
+    public List<GameObject> launchers;
+
     int launcherCount;
     bool isMousePressed;
     LineRenderer previewLine;
-    List<GameObject> launchers;
     Vector2 mousePosition;
 
     private void Start()
@@ -36,13 +44,13 @@ public class LineMaker : MonoBehaviour
             previewLine.startColor = Color.green;
             previewLine.endColor = Color.green;
 
-            previewLine.SetPosition(0, new Vector3(mousePosition.x, mousePosition.y, 0));
+            previewLine.SetPosition(0, ClampVectorXY(new Vector3(mousePosition.x, mousePosition.y, 0)));
         }
 
         // Set second point where mouse is still being pressed
         if (Input.GetMouseButton(0))
         {
-            previewLine.SetPosition(1, new Vector3(mousePosition.x, mousePosition.y, 0));
+            previewLine.SetPosition(1, ClampVectorXY(new Vector3(mousePosition.x, mousePosition.y, 0)));
         }
 
         // Create launcher and reset line when mouse would be released and if line distance is more than 0
@@ -79,12 +87,30 @@ public class LineMaker : MonoBehaviour
         launcherCount++;
         launchers.Add(newLauncher);
 
-        // Destroy oldest launcher if above launcher count
+        // Destroy oldest launcher if above launcher countw
         if (launchers.Count > launcherCountMax)
         {
             launchers[0].GetComponent<Rebound>().DespawnRebound();
             launchers.RemoveAt(0);
             launcherCount--;
         }
+    }
+
+    // Clamp X and Y vectors while preserving the Z vector
+    Vector3 ClampVectorXY(Vector3 vector)
+    {
+        Vector3 clampedVector = new Vector3();
+
+        if (vector.x > maxXRange) { clampedVector.x = maxXRange; }
+        else if (vector.x < minXRange) { clampedVector.x = minXRange; }
+        else { clampedVector.x = vector.x; }
+
+        if (vector.y > maxYRange) { clampedVector.y = maxYRange; }
+        else if (vector.y < minYRange) { clampedVector.y = minYRange; }
+        else { clampedVector.y = vector.y; }
+
+        clampedVector.z = vector.z;
+
+        return clampedVector;
     }
 }

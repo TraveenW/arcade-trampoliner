@@ -63,7 +63,7 @@ public class CrowdSystem : MonoBehaviour
     {
         crowdNoiseSource.PlayByIndex(gaspIndex);
 
-        if (isSuspense)
+        if (isSuspense && suspenseState == false)
         {
             suspenseState = true;
             UpdateBGVolume(crowdBGVolumeStore);
