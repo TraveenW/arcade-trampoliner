@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class BallSpawner : MonoBehaviour
 {
-    [SerializeField] float spawnRate = 0.3f;
+    [SerializeField] float spawnRate = 0.2f;
     [SerializeField] float spawnRateRamp = 0.05f;
+
+    [SerializeField] GameObject pointSystem;
+    [SerializeField] GameObject crowdSystem;
+    [SerializeField] GameObject lifeCounter;
 
     [Header("Ball Spawning")]
     [SerializeField] GameObject ballPrefab;
@@ -48,5 +52,7 @@ public class BallSpawner : MonoBehaviour
 
         GameObject newBall = Instantiate(ballPrefab, new Vector2(spawnX, spawnY), Quaternion.Euler(0, 0, Random.Range(0, 360)));
         newBall.GetComponent<Rigidbody2D>().velocity = new Vector2(launchVelX, launchVelY);
+
+        newBall.GetComponent<Basketball>().SetReferences(new GameObject[] { gameObject, pointSystem, crowdSystem });
     }
 }

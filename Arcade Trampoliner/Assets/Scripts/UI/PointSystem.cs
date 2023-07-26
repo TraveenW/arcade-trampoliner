@@ -13,7 +13,7 @@ public class PointSystem : MonoBehaviour
     }
 
     // Increment hit and update display
-    public void IncrementHit()
+    public void IncrementPoint()
     {
         pointNumber++;
         GetComponent<TwoLineStatDisplay>().UpdateDisplay(pointNumber);
