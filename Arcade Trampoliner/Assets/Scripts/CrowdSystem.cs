@@ -43,10 +43,8 @@ public class CrowdSystem : MonoBehaviour
     {
         crowdNoiseSource = GetComponent<AdvancedMusicPlayer>();
         crowdBGSource = crowdBG.GetComponent<AudioSource>();
-        crowdBGLights = crowdBG.GetComponent<SpriteRenderer>();
 
         UpdateBGVolume(startVolume);
-        crowdBGLights.color = new Color(1, 1, 1, 0);
     }
 
     // Increase volume of the background crowd and opacity of the lights
