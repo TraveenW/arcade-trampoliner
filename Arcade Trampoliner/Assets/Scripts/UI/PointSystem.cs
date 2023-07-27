@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PointSystem : MonoBehaviour
 {
+    [SerializeField] GameObject crowdLights;
+
     [HideInInspector] public int pointNumber;
 
     // Start is called before the first frame update
@@ -17,5 +19,7 @@ public class PointSystem : MonoBehaviour
     {
         pointNumber++;
         GetComponent<TwoLineStatDisplay>().UpdateDisplay(pointNumber);
+
+        crowdLights.GetComponent<CrowdLights>().UpdateLights(pointNumber);
     }
 }
