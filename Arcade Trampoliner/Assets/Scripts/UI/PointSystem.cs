@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PointSystem : MonoBehaviour
@@ -18,7 +19,7 @@ public class PointSystem : MonoBehaviour
     public void IncrementPoint()
     {
         pointNumber++;
-        GetComponent<TwoLineStatDisplay>().UpdateDisplay(pointNumber);
+        GetComponent<TMP_Text>().text = pointNumber.ToString();
 
         crowdLights.GetComponent<CrowdLights>().UpdateLights(pointNumber);
     }

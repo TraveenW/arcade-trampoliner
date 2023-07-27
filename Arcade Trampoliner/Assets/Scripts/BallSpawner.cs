@@ -23,6 +23,11 @@ public class BallSpawner : MonoBehaviour
 
     float timer = 0;
 
+    private void Start()
+    {
+        Physics2D.IgnoreLayerCollision(3, 3, true);
+    }
+
     // Update is called once per frame
     void Update()
     {
