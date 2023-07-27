@@ -12,13 +12,12 @@ public class CrowdSystem : MonoBehaviour
     [SerializeField] float suspenseMultiplier = 0.2f;
 
     [Header("Audio Clip List Indices")]
-    [SerializeField] int gaspIndex = 0;
-    [SerializeField] int cheerIndex = 1;
-    [SerializeField] int sighIndex = 2;
+    public int gaspIndex = 0;
+    public int cheerIndex = 1;
+    public int sighIndex = 2;
 
     AdvancedMusicPlayer crowdNoiseSource;
     AudioSource crowdBGSource;
-    SpriteRenderer crowdBGLights;
 
     float crowdBGVolumeStore;
     bool suspenseState = false;
@@ -50,10 +49,8 @@ public class CrowdSystem : MonoBehaviour
     // Increase volume of the background crowd and opacity of the lights
     public void CrowdBGStepUp()
     {
-        float crowdLightsAlpha = crowdBGLights.color.a;
 
         UpdateBGVolume(crowdBGVolumeStore + crowdStepUp);
-        crowdBGLights.color = new Color(1, 1, 1, crowdLightsAlpha + crowdStepUp);
     }
 
     // Call for gasp sound. If isSuspense is true, also reduce crowdBG volume temporarily

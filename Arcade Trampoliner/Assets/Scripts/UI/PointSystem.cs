@@ -6,6 +6,7 @@ using UnityEngine;
 public class PointSystem : MonoBehaviour
 {
     [SerializeField] GameObject crowdLights;
+    [SerializeField] GameObject basket;
 
     [HideInInspector] public int pointNumber;
 
@@ -13,6 +14,7 @@ public class PointSystem : MonoBehaviour
     void Start()
     {
         pointNumber = 0;
+        GetComponent<TMP_Text>().text = "0";
     }
 
     // Increment hit and update display
@@ -22,5 +24,6 @@ public class PointSystem : MonoBehaviour
         GetComponent<TMP_Text>().text = pointNumber.ToString();
 
         crowdLights.GetComponent<CrowdLights>().UpdateLights(pointNumber);
+        basket.GetComponent<BasketMovement>().BasketReact(pointNumber);
     }
 }

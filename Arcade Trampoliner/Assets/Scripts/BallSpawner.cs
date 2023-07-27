@@ -58,6 +58,6 @@ public class BallSpawner : MonoBehaviour
         GameObject newBall = Instantiate(ballPrefab, new Vector2(spawnX, spawnY), Quaternion.Euler(0, 0, Random.Range(0, 360)));
         newBall.GetComponent<Rigidbody2D>().velocity = new Vector2(launchVelX, launchVelY);
 
-        newBall.GetComponent<Basketball>().SetReferences(new GameObject[] { gameObject, pointSystem, crowdSystem });
+        newBall.GetComponent<Basketball>().SetReferences(new GameObject[] { gameObject, pointSystem, crowdSystem, lifeCounter });
     }
 }

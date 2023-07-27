@@ -13,7 +13,7 @@ public class Basketball : MonoBehaviour
     PointSystem pointSystem;
     CrowdSystem crowdSystem;
     BallSpawner ballSpawner;
-    GameObject lifeCounter;
+    LifeCounter lifeCounter;
 
     float immunityTimer = 0;
     bool hasSpawned = false;
@@ -43,7 +43,7 @@ public class Basketball : MonoBehaviour
         {
             if (!CompareTag("Scored"))
             {
-                // REMINDER: when lifeCounter is added, lose life
+                lifeCounter.ReduceLife();
             }
             if (CompareTag("Near"))
             {
@@ -120,7 +120,7 @@ public class Basketball : MonoBehaviour
         ballSpawner = objects[0].GetComponent<BallSpawner>();
         pointSystem = objects[1].GetComponent<PointSystem>();
         crowdSystem = objects[2].GetComponent<CrowdSystem>();
-
+        lifeCounter = objects[3].GetComponent<LifeCounter>();
     }
 
     // Change Alpha of gameObject sprite based on start, end and current points
