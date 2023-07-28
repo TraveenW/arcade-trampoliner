@@ -18,14 +18,18 @@ public class LineMaker : MonoBehaviour
     public List<GameObject> launchers;
 
     int launcherCount;
-    bool isMousePressed;
+    bool isInputPressed;
     LineRenderer previewLine;
-    Vector2 mousePosition;
+
+    bool inputDown;
+    bool inputPressed;
+    bool inputUp;
+    Vector2 inputPosition;
 
     private void Start()
     {
         launcherCount = 0;
-        isMousePressed = false;
+        isInputPressed = false;
         previewLine = GetComponent<LineRenderer>();
         launchers = new List<GameObject>();
         previewLine.startWidth = launcherPrefab.transform.localScale.y * launcherPreviewWidthProportion;
@@ -35,34 +39,45 @@ public class LineMaker : MonoBehaviour
 
     private void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
-        // Set first point of line to where mouse was pressed down
-        if (Input.GetMouseButtonDown(0) && !isMousePressed)
+        // convert mouse controls to generalised input
+        inputPosition = MouseControl();
+
+        // Set first point of line to where input method was pressed down
+        if (inputDown && !isInputPressed)
         {
-            isMousePressed = true;
+            isInputPressed = true;
             previewLine.startColor = Color.green;
             previewLine.endColor = Color.green;
 
-            previewLine.SetPosition(0, ClampVectorXY(new Vector3(mousePosition.x, mousePosition.y, 0)));
+            previewLine.SetPosition(0, ClampVectorXY(new Vector3(inputPosition.x, inputPosition.y, 0)));
         }
 
-        // Set second point where mouse is still being pressed
-        if (Input.GetMouseButton(0))
+        // Set second point where input method is still being pressed
+        if (inputPressed)
         {
-            previewLine.SetPosition(1, ClampVectorXY(new Vector3(mousePosition.x, mousePosition.y, 0)));
+            previewLine.SetPosition(1, ClampVectorXY(new Vector3(inputPosition.x, inputPosition.y, 0)));
         }
 
-        // Create launcher and reset line when mouse would be released and if line distance is more than 0
-        if (Input.GetMouseButtonUp(0) && isMousePressed)
+        // Create launcher and reset line when input method would be released, and if line distance is more than 0
+        if (inputUp && isInputPressed)
         {
-            isMousePressed = false;
+            isInputPressed = false;
             if (Vector3Math.GetDistanceYX(previewLine.GetPosition(0), previewLine.GetPosition(1)) > 0)
             {
                 SpawnLauncher();
             }
             ResetLine();
         }
+    }
+
+    // Returns coordinates of mouse position converted to world space Also converts different mouse inputs to program's input bools.
+    Vector2 MouseControl()
+    {
+        inputDown = Input.GetMouseButtonDown(0);
+        inputPressed = Input.GetMouseButton(0);
+        inputUp = Input.GetMouseButtonUp(0);
+
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     // Make line invisible and set point positions to 0, 0

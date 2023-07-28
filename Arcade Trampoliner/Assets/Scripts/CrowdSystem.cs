@@ -12,9 +12,8 @@ public class CrowdSystem : MonoBehaviour
     [SerializeField] float suspenseMultiplier = 0.2f;
 
     [Header("Audio Clip List Indices")]
-    public int gaspIndex = 0;
-    public int cheerIndex = 1;
-    public int sighIndex = 2;
+    public int cheerIndex = 0;
+    public int sighIndex = 1;
 
     AdvancedMusicPlayer crowdNoiseSource;
     AudioSource crowdBGSource;
@@ -54,9 +53,8 @@ public class CrowdSystem : MonoBehaviour
     }
 
     // Call for gasp sound. If isSuspense is true, also reduce crowdBG volume temporarily
-    public void CrowdGasp(bool isSuspense = false)
+    public void CrowdSuspense(bool isSuspense = false)
     {
-        crowdNoiseSource.PlayByIndex(gaspIndex);
 
         if (isSuspense && suspenseState == false)
         {

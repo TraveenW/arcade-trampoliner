@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BasketMovement : MonoBehaviour
 {
-    
-
     [SerializeField] int scoreInterval;
     [SerializeField] int maxScore;
 
@@ -17,6 +15,7 @@ public class BasketMovement : MonoBehaviour
     [SerializeField] float bgTrackPitchIncrease = 0.1f;
     [SerializeField] GameObject BGTrack;
     [SerializeField] GameObject BGCrowd;
+    [SerializeField] float cheerChance = 0.5f;
 
     float moveIncrement = 0;
     float moveMultiplier = 0;
@@ -48,6 +47,11 @@ public class BasketMovement : MonoBehaviour
         if (currPoint % scoreInterval == 0 && currPoint > 0 && currPoint <= maxScore)
         {
             moveMultiplier += movementStepUp;
+            if (Random.Range(0, 1) < cheerChance)
+            {
+                BGCrowd.GetComponent<AdvancedMusicPlayer>().PlayByIndex(1);
+            }
+
             BGTrack.GetComponent<AudioSource>().pitch += bgTrackPitchIncrease;
             BGCrowd.GetComponent<CrowdSystem>().CrowdBGStepUp();
         }

@@ -52,8 +52,9 @@ MonoBehaviour:
   spawnImmunityTime: 0.15
   despawnLevel: -15
   nearMissCooldown: 0.2
-  minLaunchSpeed: 3.5
-  maxLaunchSpeed: 15
+  minLaunchSpeed: 5
+  maxLaunchSpeed: 16
+  swoopSpawn: {fileID: 8300000, guid: 0a1896ddb70ee7145838bec46f5e1157, type: 3}
 --- !u!114 &7739800855512868585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +90,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

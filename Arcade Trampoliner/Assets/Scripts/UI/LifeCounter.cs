@@ -1,31 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class LifeCounter : MonoBehaviour
 {
-    [SerializeField] GameObject crowdSounds;
     [SerializeField] GameObject gameOverScreen;
 
     [SerializeField] GameObject bgCrowd;
     [SerializeField] GameObject bgTrack;
 
     int lifeAmount = 0;
-    int crowdGaspIndex;
 
-    List<GameObject> hearts = new List<GameObject>();
+    List<Transform> hearts = new List<Transform>();
     AudioSource bgCrowdSound;
     AudioSource bgTrackSound;
 
     // Start is called before the first frame update
     void Start()
     {
-        crowdGaspIndex = crowdSounds.GetComponent<CrowdSystem>().gaspIndex;
         bgCrowdSound = bgCrowd.GetComponent<AudioSource>();
         bgTrackSound = bgTrack.GetComponent<AudioSource>();
 
-        foreach (GameObject c in transform)
+        foreach (Transform c in transform)
         {
             hearts.Add(c);
             lifeAmount++;
@@ -37,13 +33,11 @@ public class LifeCounter : MonoBehaviour
     public void ReduceLife()
     {
         lifeAmount--;
-        Destroy(hearts[0]);
+        GetComponent<AudioSource>().Play();
+
+        Destroy(hearts[0].gameObject);
         hearts.RemoveAt(0);
 
-        if (lifeAmount == 1)
-        {
-            crowdSounds.GetComponent<AdvancedMusicPlayer>().PlayByIndex(crowdGaspIndex);
-        }
         if (lifeAmount == 0)
         {
             bgCrowdSound.Stop();

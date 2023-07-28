@@ -10,6 +10,8 @@ public class Basketball : MonoBehaviour
     [SerializeField] float minLaunchSpeed = 2;
     [SerializeField] float maxLaunchSpeed = 15;
 
+    [SerializeField] AudioClip swoopSpawn;
+
     PointSystem pointSystem;
     CrowdSystem crowdSystem;
     BallSpawner ballSpawner;
@@ -24,6 +26,7 @@ public class Basketball : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<AudioSource>().PlayOneShot(swoopSpawn);
         ballBounce = GetComponent<AdvancedMusicPlayer>();
     }
 
@@ -96,14 +99,14 @@ public class Basketball : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         // When leaving Rim trigger, mark ball as Near
-        if (other.transform.CompareTag("Rim"))
+        if (other.transform.CompareTag("Rim") && CompareTag("Scored"))
         {
             nearMissCounter += Time.deltaTime;
 
             if (nearMissCounter >= nearMissCooldown) 
             {
                 tag = "Near";
-                crowdSystem.CrowdGasp(true);
+                crowdSystem.CrowdSuspense(true);
             }
             
         }
